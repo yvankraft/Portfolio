@@ -69,7 +69,7 @@ const Home = () => {
             <ambientLight intensity={0.5} />
             <Environment preset="city" />
 
-            {/* Tu places tes modèles à différentes positions */}
+            {/* placons le modèle dans une position */}
             <SingleModel url="/ile_flottante.glb" position={[-6, -4, -5]} />
           </Canvas>
         </div>

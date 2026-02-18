@@ -6,3 +6,12 @@
   margin: 0 auto;
   padding: 2rem;
 }
+
+canvas {
+  touch-action: none;
+}
+
+/* Cible la div que PresentationControls génère dynamiquement */
+[style*="cursor: grab"], [style*="cursor: grabbing"] {
+  touch-action: none !important;
+}
