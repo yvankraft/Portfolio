@@ -3,6 +3,7 @@ import Navbar from "../components/Navbar";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import Footer from "../components/footer";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -118,6 +119,7 @@ const About = () => {
           </div>
         </section>
       </section>
+      <Footer />
     </div>
   );
 };
