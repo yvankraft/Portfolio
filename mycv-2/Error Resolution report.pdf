@@ -1,0 +1,41 @@
+
+🛠 Error Resolution Report / Rapport de Résolution d'Erreurs
+1. The Positioning Issue (Parenting & Transformation)
+
+FR : Problème de suivi des points de repère lors de la rotation. EN: Hotspots not following model rotation.
+
+Problem (FR) : Les composants <Html> (points de repère) ne restaient pas ancrés au modèle 3D lors de l'utilisation de PresentationControls. Ils semblaient flotter ou se décaler.
+
+Problem (EN): The <Html> components (hotspots) were not staying anchored to the 3D model when using PresentationControls. They appeared to float or shift during rotation.
+
+Root Cause (FR) : L'utilisation du composant <Center /> autour des hotspots. Ce composant recalcule dynamiquement le centre de la boîte englobante (bounding box) de tous ses enfants. En incluant les hotspots, le centre de rotation du modèle était faussé.
+
+Root Cause (EN): Using the <Center /> component around the hotspots. This component dynamically recalculates the center of the bounding box of all its children. By including the hotspots, the model's center of rotation was distorted.
+
+Solution (FR) : Sortir les points de repère du composant <Center /> ou les injecter directement comme enfants du groupe/mesh principal du modèle pour qu'ils héritent de sa matrice de transformation locale.
+
+Solution (EN): Move the hotspots out of the <Center /> component or inject them directly as children of the model's main group/mesh so they inherit its local transformation matrix.
+
+2. Frustum Culling (Mesh Disappearance)
+
+FR : Disparition de l'objet lors de la rotation. EN: Object disappearing during rotation.
+
+Problem (FR) : Le modèle disparaissait soudainement lorsque la caméra atteignait certains angles.
+
+Problem (EN): The model would suddenly disappear when the camera reached certain angles.
+
+Solution (FR) : Désactivation du frustumCulled sur les meshs du modèle via un traverse dans un useMemo. Cela force R3F à rendre l'objet même si sa boîte englobante théorique est hors champ.
+
+Solution (EN): Disabled frustumCulled on the model's meshes using a traverse inside useMemo. This forces R3F to render the object even if its theoretical bounding box is off-screen.
+
+3. State Management & Hover Effects
+
+FR : Liaison entre le 3D et l'interface UI (React). EN: Linking 3D events to the UI (React).
+
+Problem (FR) : Afficher des informations dynamiques dans un composant latéral (ProjectPresentation) lors du survol d'un objet 3D.
+
+Problem (EN): Displaying dynamic information in a side component (ProjectPresentation) when hovering over a 3D object.
+
+Solution (FR) : Utilisation de useState (activeProject) passé en "prop" aux événements onPointerOver du modèle et des hotspots.
+
+Solution (EN): Used useState (activeProject) passed as a prop to the onPointerOver events of both the model and the hotspots.

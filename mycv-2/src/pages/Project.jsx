@@ -3,6 +3,7 @@ import Navbar from "../components/Navbar";
 import Footer from "../components/footer";
 import ProjectPresentation from "../components/projectPresentation";
 import { Canvas } from "@react-three/fiber";
+import { Html } from "@react-three/drei";
 
 import {
   useGLTF,
@@ -11,11 +12,65 @@ import {
   Center,
 } from "@react-three/drei";
 
+// fonction pour les numero
+const Hotspot = ({ position, number, onClick }) => {
+  return (
+    <Html position={position} center distanceFactor={12}>
+      <div
+        onClick={(e) => {
+          e.stopPropagation(); // Empêche l'interaction avec le modèle derrière
+          onClick();
+        }}
+        className="flex p-2 items-center justify-center w-5 h-5 bg-none rounded-full text-white font-bold text-xs cursor-pointer shadow-sm border-2 border-white hover:scale-125 transition-all duration-300"
+      >
+        {number}
+      </div>
+    </Html>
+  );
+};
+
+// Données des projets (tu peux les mettre dans un fichier séparé plus tard)
+const projectsData = {
+  Monitor: {
+    id: "01",
+    title: "Auto Passion",
+    description:
+      "Plateforme interactive pour les passionnés d'automobile avec fiches techniques et galeries.",
+    tech: ["REACT", "FRAMER MOTION"],
+  },
+  Tower: {
+    id: "02",
+    title: "Data Engine",
+    description:
+      "Système de gestion de données back-end avec visualisation en temps réel.",
+    tech: ["NODE.JS", "CHART.JS", "MONGODB"],
+  },
+  Keyboard: {
+    id: "03",
+    title: "WorkFlow SaaS",
+    description:
+      "Outil de gestion de tâches optimisé pour la performance et l'organisation.",
+    tech: ["TYPESCRIPT", "TAILWIND"],
+  },
+  Mouse: {
+    id: "04",
+    title: "E-Shop Concept",
+    description:
+      "Boutique en ligne complète avec tunnel d'achat et gestion des commandes.",
+    tech: ["NEXT.JS", "STRIPE API"],
+  },
+  Table: {
+    id: "05",
+    title: "Global Infrastructure",
+    description: "Architecture du portfolio et gestion du déploiement continu.",
+    tech: ["DOCKER", "VERCEL"],
+  },
+};
+
 // Composant pour charger le modèle
-function SingleModel({ url, position }) {
+function SingleModel({ url, onHover }) {
   const meshRef = useRef();
   const { scene } = useGLTF(url);
-  const [hoveredPart, setHoveredPart] = React.useState(null);
 
   // Optimisation : Empêche l'objet de disparaître quand on tourne
   useMemo(() => {
@@ -34,50 +89,113 @@ function SingleModel({ url, position }) {
     <primitive
       ref={meshRef}
       object={scene}
-      position={position}
-      scale={3} // Ajuste selon la taille réelle du modèle
+      onPointerOver={(e) => {
+        e.stopPropagation();
+        const name = e.object.name;
+
+        // Détection simplifiée des parties
+        if (name.includes("Monitor") || name.includes("Screen"))
+          onHover(projectsData.Monitor);
+        else if (
+          name.includes("Case") ||
+          name.includes("Tower") ||
+          name.includes("Box")
+        )
+          onHover(projectsData.Tower);
+        else if (name.includes("Keyboard") || name.includes("Keys"))
+          onHover(projectsData.Keyboard);
+
+        document.body.style.cursor = "pointer";
+      }}
+      onPointerOut={() => {
+        onHover(null);
+        document.body.style.cursor = "auto";
+      }}
+      scale={4} // Ajuste selon la taille réelle du modèle
     />
   );
 }
 
 const Project = () => {
+  const [activeProject, setActiveProject] = useState(null); // Pour le survol (hover)
+  const [selectedProject, setSelectedProject] = useState(null); // Pour le clic
+  // AJOUT : Définition de l'état pour le projet actif
+
   return (
     <div
       className=" bg-slate-200 min-h-screen p-4"
       style={{ touchAction: "none" }}
     >
       <Navbar />
-      {/* Container du Canvas */}
-      <div className="w-full h-[100vh]">
-        <Canvas
-          flat
-          camera={{ position: [0, 0, 8], fov: 50, near: 0.1, far: 1000 }}
-        >
-          <ambientLight intensity={0.5} />
-          <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} />
-          <pointLight position={[-10, -10, -10]} />
-          <Environment preset="city" />
+      <div className="flex p-8 h-[95vh]">
+        {/* Container du Canvas */}
+        <div className="w-[70%] h-[100%]">
+          <Canvas
+            flat
+            camera={{ position: [0, 2, 8], fov: 50, near: 0.1, far: 1000 }}
+          >
+            <ambientLight intensity={0.5} />
+            <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} />
+            <pointLight position={[-10, -10, -10]} />
+            <Environment preset="city" />
 
-          {/* PresentationControls permet de manipuler l'objet à la souris */}
-          <PresentationControls global>
-            {/* placons le modèle dans une position */}
-            <Center position={[-2, 0.5, 0]}>
-              <SingleModel url="/gamingPc.glb" />
-            </Center>
-          </PresentationControls>
-        </Canvas>
+            {/* PresentationControls permet de manipuler l'objet à la souris */}
+            <PresentationControls
+              global
+              rotation={[0, -0.8, 0]} // Inclinaison de départ (en radians)
+            >
+              {/* placons le modèle dans une position */}
+              <Center position={[-1, 0.5, 0]}>
+                <SingleModel
+                  url="/gamingbureau.glb"
+                  onHover={setActiveProject}
+                />{" "}
+              </Center>
+              {/* Repère 1: Moniteur (object_5) */}
+              <Hotspot
+                position={[-0.8, 0.5, 3]}
+                number="1"
+                onClick={() => setSelectedProject(projectsData.Monitor)}
+                data={projectsData.Monitor}
+              />
+
+              {/* Repère 2: Unité Centrale (object_15-17) */}
+              <Hotspot
+                position={[0, 2, -3.4]}
+                number="2"
+                onClick={() => setSelectedProject(projectsData.Tower)}
+                data={projectsData.Tower}
+              />
+
+              {/* Repère 3: Clavier */}
+              <Hotspot
+                position={[0, 0.8, 0.8]}
+                number="3"
+                onClick={() => setSelectedProject(projectsData.Keyboard)}
+                data={projectsData.Keyboard}
+              />
+
+              {/* Repère 4: Souris (object_8) */}
+              <Hotspot
+                position={[0, 0.8, -1.5]}
+                number="4"
+                onClick={() => setSelectedProject(projectsData.Mouse)}
+                data={projectsData.Mouse}
+              />
+
+              {/* Repère 5: Table/Setup (object_2-4) */}
+              <Hotspot
+                position={[-2, 1.7, 0]}
+                number="5"
+                onClick={() => setSelectedProject(projectsData.Table)}
+                data={projectsData.Table}
+              />
+            </PresentationControls>
+          </Canvas>
+        </div>
+        {/* La section Interactive Lab devient dynamique */}
+        <ProjectPresentation project={selectedProject} />
       </div>
-
-      {/* Texte explicatif ou CTA ici si besoin 
-      <div className="text-center p-10 right-[2%] top-[15%] h-[80%] absolute w-auto justify-center items-center flex flex-col bg-white bg-opacity-80 rounded-2xl shadow-lg">
-        <h2 className="text-2xl font-bold">Interactive Lab</h2>
-        <p className="text-slate-600">
-          Click on components to explore my work.
-        </p>
-      </div>*/}
-
-      {/* La section Interactive Lab devient dynamique */}
-      <ProjectPresentation project={activeProject} />
       <Footer />
     </div>
   );

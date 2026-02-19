@@ -4,9 +4,8 @@ const projectPresentation = ({ project }) => {
   // État par défaut quand rien n'est survolé
   if (!project) {
     return (
-      <div className="flex flex-col items-center justify-center h-64 border-t border-slate-300 bg-slate-200/50 backdrop-blur-md">
+      <div className="flex flex-col items-center w-[30vw] h-[98%] bg-white rounded-2xl shadow-lg justify-center p-8">
         <div className="animate-pulse flex flex-col items-center">
-          <div className="w-12 h-1 bg-blue-500 mb-4 rounded-full"></div>
           <h2 className="text-xl font-mono text-slate-500 uppercase tracking-widest">
             _Select a Component
           </h2>
@@ -19,11 +18,11 @@ const projectPresentation = ({ project }) => {
   }
 
   return (
-    <div className="relative overflow-hidden h-64 border-t border-blue-400 bg-white/80 backdrop-blur-xl transition-all duration-500 ease-in-out">
-      {/* Petit indicateur visuel sur le côté */}
+    <div className="overflow-hidden p-8 h-[98%] w-[30vw] bg-white rounded-2xl shadow-lg">
+      {/* Indicateur visuel : change de couleur si c'est juste un hover ? (optionnel) */}
       <div className="absolute left-0 top-0 h-full w-2 bg-blue-600 shadow-[0_0_15px_rgba(37,99,235,0.5)]"></div>
 
-      <div className="max-w-4xl mx-auto px-8 py-10 flex flex-col md:flex-row items-center gap-8">
+      <div className="flex flex-col h-full justify-between">
         {/* Section Titre et Stats */}
         <div className="flex-1 text-left">
           <span className="text-xs font-bold text-blue-600 tracking-[0.3em] uppercase mb-2 block">
@@ -32,7 +31,7 @@ const projectPresentation = ({ project }) => {
           <h2 className="text-4xl font-black text-slate-900 leading-none mb-4">
             {project.title.toUpperCase()}
           </h2>
-          <div className="flex gap-2">
+          <div className="flex flex-wrap gap-2 mb-8">
             {project.tech.map((t) => (
               <span
                 key={t}
@@ -52,6 +51,12 @@ const projectPresentation = ({ project }) => {
           <button className="mt-4 flex items-center gap-2 text-sm font-bold text-blue-700 hover:gap-4 transition-all">
             VIEW PROJECTS <span className="text-xl">→</span>
           </button>
+        </div>
+        {/* Footer info */}
+        <div className="mt-auto pt-4">
+          <p className="text-[9px] text-slate-400 font-mono uppercase">
+            Status: Data_Synchronized
+          </p>
         </div>
       </div>
     </div>
