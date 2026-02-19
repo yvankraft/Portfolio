@@ -10,7 +10,10 @@
   -moz-osx-font-smoothing: grayscale;
 }
 
-
+.no-scroll {
+  overflow: hidden;
+  height: 100vh;
+}
 
 body {
   font-family: "Orbitron", sans-serif;
