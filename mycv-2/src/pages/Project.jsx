@@ -1,4 +1,4 @@
-import React, { useRef, useMemo, useState } from "react";
+import React, { useRef, useMemo, useState, Suspense } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/footer";
 import ProjectPresentation from "../components/projectPresentation";
@@ -36,34 +36,42 @@ const projectsData = {
     title: "Auto Passion",
     description:
       "Plateforme interactive pour les passionnés d'automobile avec fiches techniques et galeries.",
-    tech: ["REACT", "FRAMER MOTION"],
+    tech: ["Html", "Tailwind CSS", "JavaScript", "three.js", "framer motion"],
   },
   Tower: {
     id: "02",
-    title: "Data Engine",
+    title: "My CV",
     description:
-      "Système de gestion de données back-end avec visualisation en temps réel.",
-    tech: ["NODE.JS", "CHART.JS", "MONGODB"],
+      "Cv interactif avec animations et présentation dynamique des compétences.",
+    tech: ["React", "Vite", "framer motion"],
   },
   Keyboard: {
     id: "03",
-    title: "WorkFlow SaaS",
+    title: "Chat App",
     description:
-      "Outil de gestion de tâches optimisé pour la performance et l'organisation.",
-    tech: ["TYPESCRIPT", "TAILWIND"],
+      "Application de chat en temps réel avec fonctionnalités de groupe et partage de fichiers. En cours de développement.",
+    tech: [
+      "React",
+      "TAILWIND CSS",
+      "Socket.io",
+      "Node.js",
+      "Express",
+      "MongoDB",
+    ],
   },
   Mouse: {
     id: "04",
     title: "E-Shop Concept",
     description:
       "Boutique en ligne complète avec tunnel d'achat et gestion des commandes.",
-    tech: ["NEXT.JS", "STRIPE API"],
+    tech: ["NEXT.JS", "STRIPE API", "Tailwind CSS"],
   },
   Table: {
     id: "05",
-    title: "Global Infrastructure",
-    description: "Architecture du portfolio et gestion du déploiement continu.",
-    tech: ["DOCKER", "VERCEL"],
+    title: "Prosannal form",
+    description:
+      "Site de formulaire dynamique avec validation et intégration backend.",
+    tech: ["Chart.js", "Node.js", "Zod", "React", "Zustand"],
   },
 };
 
@@ -129,69 +137,78 @@ const Project = () => {
       <Navbar />
       <div className="flex p-8 h-[95vh]">
         {/* Container du Canvas */}
+
         <div className="w-[70%] h-[100%]">
-          <Canvas
-            flat
-            camera={{ position: [0, 2, 8], fov: 50, near: 0.1, far: 1000 }}
+          <Suspense
+            fallback={
+              <div className="text-slate-500 font-mono animate-pulse">
+                SYSTEM_LOADING...
+              </div>
+            }
           >
-            <ambientLight intensity={0.5} />
-            <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} />
-            <pointLight position={[-10, -10, -10]} />
-            <Environment preset="city" />
-
-            {/* PresentationControls permet de manipuler l'objet à la souris */}
-            <PresentationControls
-              global
-              rotation={[0, -0.8, 0]} // Inclinaison de départ (en radians)
+            <Canvas
+              flat
+              camera={{ position: [0, 2, 8], fov: 50, near: 0.1, far: 1000 }}
             >
-              {/* placons le modèle dans une position */}
-              <Center position={[-1, 0.5, 0]}>
-                <SingleModel
-                  url="/gamingbureau.glb"
-                  onHover={setActiveProject}
-                />{" "}
-              </Center>
-              {/* Repère 1: Moniteur (object_5) */}
-              <Hotspot
-                position={[-0.8, 0.5, 3]}
-                number="1"
-                onClick={() => setSelectedProject(projectsData.Monitor)}
-                data={projectsData.Monitor}
-              />
+              <ambientLight intensity={0.5} />
+              <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} />
+              <pointLight position={[-10, -10, -10]} />
+              <Environment preset="city" />
 
-              {/* Repère 2: Unité Centrale (object_15-17) */}
-              <Hotspot
-                position={[0, 2, -3.4]}
-                number="2"
-                onClick={() => setSelectedProject(projectsData.Tower)}
-                data={projectsData.Tower}
-              />
+              {/* PresentationControls permet de manipuler l'objet à la souris */}
+              <PresentationControls
+                global
+                rotation={[0, -0.8, 0]} // Inclinaison de départ (en radians)
+              >
+                {/* placons le modèle dans une position */}
+                <Center position={[-1, 0.5, 0]}>
+                  <SingleModel
+                    url="/gamingbureau.glb"
+                    onHover={setActiveProject}
+                  />{" "}
+                </Center>
+                {/* Repère 1: Moniteur (object_5) */}
+                <Hotspot
+                  position={[-0.8, 0.5, 3]}
+                  number="1"
+                  onClick={() => setSelectedProject(projectsData.Monitor)}
+                  data={projectsData.Monitor}
+                />
 
-              {/* Repère 3: Clavier */}
-              <Hotspot
-                position={[0, 0.8, 0.8]}
-                number="3"
-                onClick={() => setSelectedProject(projectsData.Keyboard)}
-                data={projectsData.Keyboard}
-              />
+                {/* Repère 2: Unité Centrale (object_15-17) */}
+                <Hotspot
+                  position={[0, 2, -3.4]}
+                  number="2"
+                  onClick={() => setSelectedProject(projectsData.Tower)}
+                  data={projectsData.Tower}
+                />
 
-              {/* Repère 4: Souris (object_8) */}
-              <Hotspot
-                position={[0, 0.8, -1.5]}
-                number="4"
-                onClick={() => setSelectedProject(projectsData.Mouse)}
-                data={projectsData.Mouse}
-              />
+                {/* Repère 3: Clavier */}
+                <Hotspot
+                  position={[0, 0.8, 0.8]}
+                  number="3"
+                  onClick={() => setSelectedProject(projectsData.Keyboard)}
+                  data={projectsData.Keyboard}
+                />
 
-              {/* Repère 5: Table/Setup (object_2-4) */}
-              <Hotspot
-                position={[-2, 1.7, 0]}
-                number="5"
-                onClick={() => setSelectedProject(projectsData.Table)}
-                data={projectsData.Table}
-              />
-            </PresentationControls>
-          </Canvas>
+                {/* Repère 4: Souris (object_8) */}
+                <Hotspot
+                  position={[0, 0.8, -1.5]}
+                  number="4"
+                  onClick={() => setSelectedProject(projectsData.Mouse)}
+                  data={projectsData.Mouse}
+                />
+
+                {/* Repère 5: Table/Setup (object_2-4) */}
+                <Hotspot
+                  position={[-2, 1.7, 0]}
+                  number="5"
+                  onClick={() => setSelectedProject(projectsData.Table)}
+                  data={projectsData.Table}
+                />
+              </PresentationControls>
+            </Canvas>
+          </Suspense>
         </div>
         {/* La section Interactive Lab devient dynamique */}
         <ProjectPresentation project={selectedProject} />
