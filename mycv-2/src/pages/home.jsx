@@ -70,7 +70,7 @@ const Home = () => {
             <Environment preset="city" />
 
             {/* placons le modèle dans une position */}
-            <SingleModel url="/ile_flottante-opt.glb" position={[-6, -4, -5]} />
+            <SingleModel url="/ile_flottante.glb" position={[-6, -4, -5]} />
           </Canvas>
         </div>
         <div className="flex flex-col justify-end items-end h-screen w-full p-10 pb-25">

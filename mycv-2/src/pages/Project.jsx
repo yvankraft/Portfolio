@@ -1,16 +1,14 @@
-import React, { useRef, useMemo, useState, useEffect } from "react";
+import React, { useRef, useMemo, useState } from "react";
 import Navbar from "../components/Navbar";
 import Footer from "../components/footer";
 import ProjectPresentation from "../components/projectPresentation";
 import { Canvas } from "@react-three/fiber";
 import { Html } from "@react-three/drei";
-
 import {
   useGLTF,
   Environment,
   PresentationControls,
   Center,
-  useProgress,
 } from "@react-three/drei";
 
 // fonction pour les numero
@@ -120,7 +118,7 @@ function SingleModel({ url, onHover }) {
         onHover(null);
         document.body.style.cursor = "auto";
       }}
-      scale={4} // Ajuste selon la taille réelle du modèle
+      scale={2} // Ajuste selon la taille réelle du modèle
     />
   );
 }
@@ -129,32 +127,6 @@ const Project = () => {
   const [activeProject, setActiveProject] = useState(null); // Pour le survol (hover)
   const [selectedProject, setSelectedProject] = useState(null); // Pour le clic
   // AJOUT : Définition de l'état pour le projet actif
-
-  // Hook pour suivre le chargement réel des assets 3D
-  const { progress } = useProgress();
-
-  useEffect(() => {
-    const loaderOverlay = document.getElementById("loader-overlay");
-    const progressBar = document.getElementById("progress-bar");
-    const progressNum = document.getElementById("progress-num");
-
-    if (progressBar && progressNum) {
-      progressBar.style.width = `${progress}%`;
-      progressNum.textContent = Math.round(progress);
-    }
-
-    if (progress === 100 && loaderOverlay) {
-      // Petit délai pour laisser l'utilisateur voir le 100%
-      setTimeout(() => {
-        loaderOverlay.style.opacity = "0";
-        setTimeout(() => {
-          loaderOverlay.style.display = "none";
-          document.body.classList.remove("no-scroll");
-        }, 500);
-      }, 500);
-    }
-  }, [progress]);
-
   return (
     <div
       className=" bg-slate-200 min-h-screen p-4"
@@ -180,15 +152,15 @@ const Project = () => {
               rotation={[0, -0.8, 0]} // Inclinaison de départ (en radians)
             >
               {/* placons le modèle dans une position */}
-              <Center position={[-1, 0.5, 0]}>
+              <Center position={[-6, -1, -6]}>
                 <SingleModel
-                  url="/gamingbureau-opt.glb"
+                  url="/gamingsetup.glb"
                   onHover={setActiveProject}
                 />{" "}
               </Center>
               {/* Repère 1: Moniteur (object_5) */}
               <Hotspot
-                position={[-0.8, 0.5, 3]}
+                position={[-6, -0.8, -0.6]}
                 number="1"
                 onClick={() => setSelectedProject(projectsData.Monitor)}
                 data={projectsData.Monitor}
@@ -196,7 +168,7 @@ const Project = () => {
 
               {/* Repère 2: Unité Centrale (object_15-17) */}
               <Hotspot
-                position={[0, 2, -3.4]}
+                position={[-6, 2, -9.5]}
                 number="2"
                 onClick={() => setSelectedProject(projectsData.Tower)}
                 data={projectsData.Tower}
@@ -204,7 +176,7 @@ const Project = () => {
 
               {/* Repère 3: Clavier */}
               <Hotspot
-                position={[0, 0.8, 0.8]}
+                position={[-6, -0.6, -4]}
                 number="3"
                 onClick={() => setSelectedProject(projectsData.Keyboard)}
                 data={projectsData.Keyboard}
@@ -212,7 +184,7 @@ const Project = () => {
 
               {/* Repère 4: Souris (object_8) */}
               <Hotspot
-                position={[0, 0.8, -1.5]}
+                position={[-2, 0.8, -8]}
                 number="4"
                 onClick={() => setSelectedProject(projectsData.Mouse)}
                 data={projectsData.Mouse}
@@ -220,7 +192,7 @@ const Project = () => {
 
               {/* Repère 5: Table/Setup (object_2-4) */}
               <Hotspot
-                position={[-2, 1.7, 0]}
+                position={[-8, 1.7, -5]}
                 number="5"
                 onClick={() => setSelectedProject(projectsData.Table)}
                 data={projectsData.Table}

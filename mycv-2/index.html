@@ -72,7 +72,38 @@
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
     <script>
-      // Le chargement est maintenant géré par React (Project.jsx) via useProgress
+        const loaderOverlay = document.getElementById('loader-overlay');
+        const progressNum = document.getElementById('progress-num');
+        const progressBar = document.getElementById('progress-bar');
+
+        let progress = 0;
+        let loaded = false;
+
+        const interval = setInterval(() => {
+          if (progress < 100) {
+            progressNum.textContent = progress++;
+            progressBar.style.width = `${progress}%`;
+          }else if (loaded) {
+            
+            loaderOverlay.style.opacity = '0';clearInterval(interval);
+            setTimeout(() => {
+              loaderOverlay.style.display = 'none';
+              document.body.classList.remove('no-scroll');
+            }, 500);
+          }
+        }, 4000);
+        window.addEventListener('load', () => {
+          loaded = true;
+
+          clearInterval(interval);
+          progressNum.textContent = '100';
+          progressBar.style.width = '100%';
+          loaderOverlay.style.opacity = '0';
+          setTimeout(() => {
+            loaderOverlay.style.display = 'none';
+            document.body.classList.remove('no-scroll');
+          }, 400);
+        });
     </script>
   </body>
 </html>
