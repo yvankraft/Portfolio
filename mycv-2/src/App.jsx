@@ -4,6 +4,7 @@ import Home from "./pages/home";
 import About from "./pages/About";
 import Contact from "./pages/contact";
 import Project from "./pages/Project";
+import NotFound from "./pages/NotFound";
 
 const App = () => {
   return (
@@ -16,7 +17,8 @@ const App = () => {
             <Route path="/about" element={<About />} />
             <Route path="/contact" element={<Contact />} />
             <Route path="/projects" element={<Project />} />
-            <Route path="*" element={<Navigate to="/home" replace />} />
+            {/* La page 404 / Coming Soon */}
+            <Route path="*" element={<NotFound />} />
           </Routes>
         </BrowserRouter>
       </div>

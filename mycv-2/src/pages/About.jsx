@@ -118,6 +118,57 @@ const About = () => {
             Scrolltriger
           </div>
         </section>
+        <main>
+          <section>
+            {" "}
+            <h1 className="text-5xl font-bold text-center font-mono">
+              Web Developer
+            </h1>
+          </section>
+          <section>
+            <h1 className="text-5xl font-bold text-center font-mono">
+              App Developer
+            </h1>
+          </section>
+          <section>
+            <h1 className="text-5xl font-bold text-center font-mono">
+              Disigner
+            </h1>
+            <h2>Blender</h2>
+            <p>
+              Actuali am using a loot of skechfab ressource for my project and
+              web Site. But i may have build{" "}
+            </p>
+            <h2>Spline</h2>
+          </section>
+          <section>
+            <h1 className="text-5xl font-bold text-center font-mono">
+              Gaming Section
+            </h1>
+            <div>Unity Icon</div>
+            <h2>Unity </h2>
+            <p>
+              My website was influenced by Needle web site and wich i cann build
+              some Gaming web site like a bruno Simons web site{" "}
+            </p>
+            <img src="" alt="" />
+            <p>i actualie Started to build a map for Project</p>
+            <img src="" alt="" />
+            <p>and get a avatar</p>
+            <p>
+              i'm actualie lerning a basic 3D modeling and animation skills with
+              Unity
+            </p>
+            <img src="" alt="" />
+            <p>i am also learning to build a 3D game with Unity</p>
+            <img src="" alt="" />
+            <p>I also buil a tank lesson game with Unity.</p>
+            <div>
+              <img src="" alt="" />
+              <button>see more</button>
+            </div>
+          </section>
+        </main>
       </section>
       <Footer />
     </div>
